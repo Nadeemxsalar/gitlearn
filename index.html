@@ -17,23 +17,19 @@
             --text-color: #ffffff;
             --text-muted: #a4a4a4;
             --primary-font: 'Oswald', sans-serif;
-            --accent-color: #ff0040; /* Changed accent to a slight red for Moksh vibe */
+            --accent-color: #ff0040;
             --transition-speed: 0.4s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--primary-font); font-weight: 300; overflow-x: hidden; line-height: 1.6; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--primary-font); font-weight: 300; overflow-x: hidden; line-height: 1.6; width: 100%; }
         a { text-decoration: none; color: inherit; transition: var(--transition-speed); }
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
         button { cursor: pointer; font-family: var(--primary-font); }
 
-        /* --- UTILITY & PRELOADER --- */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
-        .loader-text { font-size: 3rem; font-weight: 700; letter-spacing: 5px; color: #fff; animation: blink 1.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        
+        /* --- UTILITY --- */
         .overlay-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 150; display: none; opacity: 0; transition: opacity 0.3s ease; }
         .overlay-backdrop.active { display: block; opacity: 1; }
 
@@ -45,10 +41,11 @@
         /* --- HEADER --- */
         .site-header { position: absolute; top: 40px; width: 100%; z-index: 100; background: transparent; transition: 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .site-header.sticky { position: fixed; top: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); padding: 0; border-bottom: none; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; max-width: 1600px; margin: 0 auto; }
         
-        /* Updated Logo Style */
-        .logo { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: white; text-transform: uppercase; border: 2px solid white; padding: 5px 15px; }
+        /* Updated Header Container for Spacing */
+        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; max-width: 1600px; margin: 0 auto; gap: 20px; }
+        
+        .logo { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: white; text-transform: uppercase; border: 2px solid white; padding: 5px 15px; white-space: nowrap; }
         
         .nav-link { font-size: 16px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-right: 25px; position: relative; }
         .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: #fff; transition: width 0.3s; }
@@ -58,11 +55,11 @@
         .icon-link { font-size: 20px; margin-left: 20px; position: relative; background: none; border: none; color: white; }
         .icon-link:hover { color: #ccc; }
         .icon-link .count { position: absolute; top: -8px; right: -10px; background: #fff; color: #000; font-size: 10px; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .mobile-menu-btn { display: none; background: none; border: none; color: white; font-size: 24px; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: white; font-size: 24px; padding-right: 10px; }
 
-        /* --- MOBILE MENU (FIXED) --- */
+        /* --- MOBILE MENU --- */
         .mobile-menu-overlay {
-            position: fixed; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100%; background: #111; z-index: 250;
+            position: fixed; top: 0; left: -100%; width: 85%; max-width: 300px; height: 100%; background: #111; z-index: 250;
             transition: 0.4s ease; padding: 40px; border-right: 1px solid #333; display: flex; flex-direction: column;
         }
         .mobile-menu-overlay.active { left: 0; }
@@ -70,18 +67,17 @@
         .mobile-nav-links { margin-top: 50px; display: flex; flex-direction: column; gap: 20px; }
         .mobile-nav-links a { font-size: 20px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 10px; }
 
-        /* --- SEARCH OVERLAY --- */
+        /* --- SIDEBARS & MODALS --- */
         .search-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 0; background: #111; z-index: 200; overflow: hidden; transition: height 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .search-overlay.open { height: 400px; border-bottom: 1px solid #333; }
-        .search-container { position: relative; width: 60%; max-width: 800px; text-align: center; }
-        .search-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #333; font-size: 40px; color: #fff; padding: 10px; font-family: var(--primary-font); text-transform: uppercase; outline: none; }
+        .search-container { position: relative; width: 80%; max-width: 800px; text-align: center; }
+        .search-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #333; font-size: 30px; color: #fff; padding: 10px; font-family: var(--primary-font); text-transform: uppercase; outline: none; }
         .close-search { position: absolute; top: 30px; right: 40px; font-size: 30px; color: #fff; cursor: pointer; }
 
-        /* --- CART SIDEBAR --- */
         .sidebar-panel {
-            position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: #111; z-index: 200; transition: right 0.4s ease; display: flex; flex-direction: column; border-left: 1px solid #333;
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #111; z-index: 200; transition: right 0.4s ease; display: flex; flex-direction: column; border-left: 1px solid #333;
         }
         .sidebar-panel.open { right: 0; }
         .panel-header { padding: 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
@@ -94,6 +90,13 @@
         .remove-item { color: #ff4444; font-size: 12px; margin-top: 5px; background: none; border: none; padding: 0; text-decoration: underline; }
         .checkout-btn { width: 100%; background: #fff; color: #000; padding: 15px; border: none; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
 
+        /* FEATURE: SIZE GUIDE MODAL */
+        .size-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: #1a1a1a; padding: 30px; z-index: 300; width: 90%; max-width: 600px; border: 1px solid #333; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .size-modal.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: all; }
+        .size-table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: center; }
+        .size-table th, .size-table td { border: 1px solid #444; padding: 10px; color: #ccc; }
+        .size-table th { background: #000; color: #fff; }
+        
         /* --- HERO SLIDER --- */
         .hero-slider { height: 100vh; width: 100%; position: relative; overflow: hidden; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; display: flex; align-items: center; justify-content: center; text-align: center; }
@@ -103,22 +106,30 @@
         .slide::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2; }
         .slide-content { position: relative; z-index: 3; max-width: 800px; padding: 20px; }
         .slide-content h2 { font-size: 80px; line-height: 1; margin-bottom: 20px; transform: translateY(50px); opacity: 0; transition: all 0.8s ease; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .slide.active h2 { transform: translateY(0); opacity: 1; }
         .btn-primary { display: inline-block; padding: 15px 40px; background: #fff; color: #000; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border: 2px solid #fff; transition: 0.3s; }
         .btn-primary:hover { background: #000; color: #fff; }
         .slider-controls button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 50px; height: 50px; border-radius: 50%; z-index: 10; cursor: pointer; }
         #prev-slide { left: 40px; } #next-slide { right: 40px; }
 
-        /* --- FEATURE 1: COUNTDOWN TIMER --- */
-        .countdown-section { background: #111; padding: 20px; text-align: center; border-bottom: 1px solid #333; }
-        .countdown-timer { font-size: 24px; font-weight: 700; color: var(--accent-color); letter-spacing: 2px; }
-        .countdown-text { font-size: 14px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+        /* --- FEATURE 1: SHOP BY ANIME --- */
+        .anime-categories { padding: 60px 20px; text-align: center; }
+        .anime-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1400px; margin: 40px auto 0; }
+        .anime-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 16/9; }
+        .anime-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.7); }
+        .anime-item:hover img { transform: scale(1.1); filter: brightness(1); }
+        .anime-name { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; font-weight: 700; text-transform: uppercase; text-shadow: 2px 2px 4px black; z-index: 2; }
 
-        /* --- PRODUCT SECTION --- */
-        .product-section { padding: 80px 40px; max-width: 1600px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 30px; }
-        .section-title { font-size: 40px; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
+        /* --- FEATURE 2: LOOKBOOK VIDEO --- */
+        .lookbook-section { position: relative; height: 60vh; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 40px 0; }
+        .lookbook-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.6; }
+        .lookbook-content { position: relative; z-index: 2; text-align: center; border: 4px solid #fff; padding: 40px; }
+        .lookbook-content h2 { font-size: 50px; text-transform: uppercase; margin-bottom: 10px; }
 
-        /* --- FEATURE 2: FILTERS --- */
+        /* --- PRODUCTS --- */
+        .product-section { padding: 60px 40px; max-width: 1600px; margin: 0 auto; }
+        .section-title { font-size: 40px; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
+        
         .filter-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
         .filter-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 20px; text-transform: uppercase; transition: 0.3s; }
         .filter-btn:hover, .filter-btn.active { border-color: #fff; color: #fff; }
@@ -140,22 +151,36 @@
         .add-to-cart-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #fff; color: #fff; text-transform: uppercase; transition: 0.3s; }
         .add-to-cart-btn:hover { background: #fff; color: #000; }
 
-        /* --- FEATURE 3: TESTIMONIALS --- */
-        .testimonials { background: #111; padding: 80px 40px; text-align: center; }
+        /* --- FEATURE 3: TRUST BADGES --- */
+        .trust-badges { background: #111; padding: 40px 20px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
+        .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .trust-item i { font-size: 30px; color: var(--accent-color); margin-bottom: 15px; }
+        .trust-item h4 { text-transform: uppercase; margin-bottom: 5px; }
+        .trust-item p { font-size: 12px; color: #888; }
+
+        /* --- FEATURE 4: FAQ SECTION --- */
+        .faq-section { padding: 60px 20px; max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid #333; margin-bottom: 10px; }
+        .faq-item summary { padding: 15px; cursor: pointer; list-style: none; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .faq-item summary::after { content: '+'; font-size: 20px; }
+        .faq-item[open] summary::after { content: '-'; }
+        .faq-content { padding: 0 15px 15px; color: #aaa; font-size: 14px; }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials { background: #0e0e0e; padding: 80px 40px; text-align: center; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 40px auto 0; }
-        .testimonial-card { background: #0a0a0a; padding: 30px; border: 1px solid #222; }
+        .testimonial-card { background: #050505; padding: 30px; border: 1px solid #222; }
         .stars { color: gold; margin-bottom: 15px; }
         .review-text { font-style: italic; color: #ccc; margin-bottom: 20px; font-size: 14px; }
         .reviewer-name { font-weight: 700; letter-spacing: 1px; }
 
-        /* --- FEATURE 4: NEWSLETTER --- */
+        /* --- NEWSLETTER --- */
         .newsletter { padding: 60px 20px; text-align: center; border-top: 1px solid #222; }
         .newsletter h3 { font-size: 30px; margin-bottom: 10px; }
         .newsletter-form { max-width: 500px; margin: 20px auto; display: flex; }
         .newsletter-form input { flex: 1; padding: 15px; background: #111; border: 1px solid #333; color: #fff; outline: none; }
         .newsletter-form button { padding: 15px 30px; background: #fff; border: none; font-weight: bold; }
 
-        /* --- FEATURE 5: FLOATING WHATSAPP --- */
         .floating-whatsapp { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 30px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s; }
         .floating-whatsapp:hover { transform: scale(1.1); }
 
@@ -164,26 +189,43 @@
         .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; color: #666; }
 
-        /* --- RESPONSIVE --- */
+        /* --- RESPONSIVE MEDIA QUERIES --- */
         @media (max-width: 1024px) { 
             .product-grid { grid-template-columns: repeat(2, 1fr); } 
-            .testimonial-grid { grid-template-columns: 1fr; }
-            .sidebar-panel { width: 100%; right: -100%; }
+            .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
+            .trust-grid { grid-template-columns: repeat(2, 1fr); }
+            .anime-grid { grid-template-columns: repeat(2, 1fr); }
         }
+
+        /* MOBILE FIXES */
         @media (max-width: 768px) { 
             .desktop-nav { display: none; } 
-            .mobile-menu-btn { display: block; } 
-            .header-container { padding: 15px 20px; } 
-            .footer-container { grid-template-columns: 1fr; } 
+            .mobile-menu-btn { display: block; margin-right: 10px; } /* Added margin for space */
+            
+            /* UPDATED HEADER PADDING & LOGO SIZE */
+            .header-container { padding: 20px 25px; } /* Increased side padding */
+            .logo { font-size: 20px; padding: 5px 10px; } /* Smaller Logo on Mobile */
+            .icon-link { margin-left: 10px; font-size: 18px; } /* Adjusted icon spacing */
+
+            .footer-container { grid-template-columns: 1fr; text-align: center; } 
             .announcement-bar { display: none; } 
             .slide-content h2 { font-size: 40px; }
             .newsletter-form { flex-direction: column; gap: 10px; }
+            .lookbook-content h2 { font-size: 30px; }
+            .lookbook-content { padding: 20px; width: 90%; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+            
+            .product-grid { grid-template-columns: 1fr; padding: 0 10px; }
+            .product-section { padding: 40px 10px; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .trust-grid { grid-template-columns: 1fr; }
+            .anime-grid { grid-template-columns: 1fr; padding: 0 20px; }
+            #prev-slide { left: 10px; } #next-slide { right: 10px; }
+            .section-title { font-size: 30px; }
         }
     </style>
 </head>
 <body>
-
-    <div id="preloader"><div class="loader-text">MOKSHSHOP</div></div>
 
     <div class="overlay-backdrop" id="backdrop"></div>
 
@@ -193,16 +235,35 @@
             <a href="#">New Arrivals</a>
             <a href="#">Hoodies</a>
             <a href="#">T-Shirts</a>
-            <a href="#">Accessories</a>
+            <button onclick="togglePanel('size-modal', true)" style="background:none; border:none; color:white; font-size:20px; text-align:left; padding:0; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #333; padding-bottom:10px;">Size Guide</button>
             <a href="#">Login</a>
         </div>
+    </div>
+
+    <div class="size-modal" id="size-modal">
+        <div class="panel-header">
+            <h3>SIZE GUIDE (INCHES)</h3>
+            <button class="close-panel" onclick="togglePanel('size-modal', false)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <table class="size-table">
+            <thead>
+                <tr><th>Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>S</td><td>40</td><td>27</td><td>18</td></tr>
+                <tr><td>M</td><td>42</td><td>28</td><td>19</td></tr>
+                <tr><td>L</td><td>44</td><td>29</td><td>20</td></tr>
+                <tr><td>XL</td><td>46</td><td>30</td><td>21</td></tr>
+                <tr><td>XXL</td><td>48</td><td>31</td><td>22</td></tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="search-overlay" id="search-panel">
         <button class="close-search" id="close-search"><i class="fa-solid fa-xmark"></i></button>
         <div class="search-container">
             <input type="text" class="search-input" id="search-input" placeholder="SEARCH MOKSHSHOP...">
-            <div class="search-results-text">Type 'Arise', 'Hoodie', or 'T-shirt' to filter below.</div>
+            <div class="search-results-text" style="margin-top:20px; color:#666;">Type 'Arise', 'Hoodie', or 'T-shirt' to filter below.</div>
         </div>
     </div>
 
@@ -215,7 +276,7 @@
             <p style="text-align: center; color: #666; margin-top: 50px;">Your cart is empty.</p>
         </div>
         <div class="panel-footer">
-            <div class="cart-total">
+            <div class="cart-total" style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:18px; font-weight:bold;">
                 <span>SUBTOTAL:</span>
                 <span id="cart-total-price">₹0.00</span>
             </div>
@@ -246,9 +307,8 @@
                 <nav class="desktop-nav">
                     <ul class="menu">
                         <li><a href="#" class="nav-link">NEW</a></li>
-                        <li class="has-dropdown">
-                            <a href="#" class="nav-link">APPAREL <i class="fa-solid fa-chevron-down"></i></a>
-                        </li>
+                        <li><a href="#shop" class="nav-link">APPAREL</a></li>
+                        <li><button onclick="togglePanel('size-modal', true)" style="background:none; border:none; color:white; font-size:16px;" class="nav-link">SIZE GUIDE</button></li>
                     </ul>
                 </nav>
             </div>
@@ -268,16 +328,16 @@
             <div class="slide active">
                 <div class="slide-bg" style="background-image: url('https://thekokorostore.com/wp-content/uploads/2024/06/Kokoro_02-06-240340-copy-scaled.webp');"></div>
                 <div class="slide-content">
-                    <h2 class="animate-text">MOKSH ORIGINALS</h2>
-                    <p class="animate-text">Elevate Your Anime Style</p>
-                    <a href="#shop" class="btn-primary animate-text">SHOP NOW</a>
+                    <h2>MOKSH ORIGINALS</h2>
+                    <p>Elevate Your Anime Style</p>
+                    <a href="#shop" class="btn-primary">SHOP NOW</a>
                 </div>
             </div>
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://thekokorostore.com/wp-content/uploads/2024/06/Kokoro_02-06-240602-copy-scaled.webp');"></div>
                 <div class="slide-content">
-                    <h2 class="animate-text">WINTER DROP</h2>
-                    <a href="#shop" class="btn-primary animate-text">EXPLORE</a>
+                    <h2>WINTER DROP</h2>
+                    <a href="#shop" class="btn-primary">EXPLORE</a>
                 </div>
             </div>
         </div>
@@ -287,9 +347,31 @@
         </div>
     </section>
 
-    <div class="countdown-section">
-        <div class="countdown-text">Flash Sale Ends In</div>
-        <div class="countdown-timer" id="timer">05 : 23 : 45</div>
+    <section class="anime-categories">
+        <h2 class="section-title">SHOP BY ANIME</h2>
+        <div class="anime-grid">
+            <div class="anime-item">
+                <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A6779-scaled.jpg" alt="Solo Leveling">
+                <div class="anime-name">SOLO LEVELING</div>
+            </div>
+            <div class="anime-item">
+                <img src="https://thekokorostore.com/wp-content/uploads/2020/11/KOKORO_0805-copy-scaled.webp" alt="Bleach">
+                <div class="anime-name">BLEACH</div>
+            </div>
+            <div class="anime-item">
+                <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7488-scaled.jpg" alt="FMA">
+                <div class="anime-name">FULLMETAL</div>
+            </div>
+            <div class="anime-item">
+                <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7259-scaled.jpg" alt="JJK">
+                <div class="anime-name">DANDADAN</div>
+            </div>
+        </div>
+    </section>
+
+    <div style="background: #111; padding: 20px; text-align: center; border-bottom: 1px solid #333;">
+        <div style="font-size: 14px; color: #888; margin-bottom: 5px; text-transform: uppercase;">Flash Sale Ends In</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--accent-color); letter-spacing: 2px;" id="timer">05 : 23 : 45</div>
     </div>
 
     <main id="shop">
@@ -373,6 +455,56 @@
             </div>
         </section>
 
+        <section class="lookbook-section">
+            <img src="https://i.gifer.com/7d20.gif" class="lookbook-video" alt="Anime Background"> 
+            <div class="lookbook-content">
+                <h2>THE MOKSH LOOKBOOK</h2>
+                <p>STREETWEAR INSPIRED BY THE STREETS OF TOKYO</p>
+                <a href="#shop" class="btn-primary" style="margin-top:20px; background:transparent;">WATCH NOW</a>
+            </div>
+        </section>
+
+        <section class="trust-badges">
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h4>Free Shipping</h4>
+                    <p>On All Prepaid Orders</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <h4>7 Days Return</h4>
+                    <p>Easy Returns & Exchange</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Secure Payment</h4>
+                    <p>SSL Encrypted Checkout</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fa-solid fa-shirt"></i>
+                    <h4>Premium Fabric</h4>
+                    <p>240 GSM 100% Cotton</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="section-title" style="margin-bottom: 40px;">FAQs</h2>
+            <details class="faq-item">
+                <summary>How long does delivery take?</summary>
+                <div class="faq-content">Usually 5-7 business days across India. Remote areas might take longer.</div>
+            </details>
+            <details class="faq-item">
+                <summary>Is the print quality durable?</summary>
+                <div class="faq-content">Yes, we use DTF and Screen Puff printing which lasts for 50+ washes.</div>
+            </details>
+            <details class="faq-item">
+                <summary>What if the size doesn't fit?</summary>
+                <div class="faq-content">No worries! You can exchange it for a different size within 7 days.</div>
+            </details>
+        </section>
+
         <section class="testimonials">
             <h2 class="section-title">OTAKU REVIEWS</h2>
             <div class="testimonial-grid">
@@ -439,31 +571,25 @@
             // --- 1. GLOBAL VARIABLES & ELEMENTS ---
             const backdrop = document.getElementById('backdrop');
             let cart = [];
-            
-            // --- 2. PRELOADER & SCROLL ---
-            const preloader = document.getElementById("preloader");
             const header = document.getElementById("header");
-            
-            window.addEventListener("load", () => {
-                preloader.style.opacity = "0";
-                setTimeout(() => preloader.style.display = "none", 500);
-            });
 
+            // --- 2. SCROLL LOGIC ---
             window.addEventListener("scroll", () => {
                 header.classList.toggle("sticky", window.scrollY > 100);
             });
 
             // --- 3. UI PANELS TOGGLE LOGIC ---
-            function togglePanel(panelId, open) {
+            window.togglePanel = function(panelId, open) {
                 const panel = document.getElementById(panelId);
                 const isMobileMenu = panelId === 'mobile-menu-overlay';
                 
                 if (open) {
-                    panel.classList.add(isMobileMenu || panelId === 'login-modal' ? 'active' : 'open');
-                    backdrop.classList.add('active');
+                    panel.classList.add(isMobileMenu ? 'active' : (panelId === 'size-modal' ? 'active' : 'open'));
+                    if(panelId !== 'size-modal') backdrop.classList.add('active'); 
+                    if(panelId === 'size-modal') panel.style.pointerEvents = "all";
                 } else {
-                    panel.classList.remove(isMobileMenu || panelId === 'login-modal' ? 'active' : 'open');
-                    backdrop.classList.remove('active');
+                    panel.classList.remove(isMobileMenu ? 'active' : (panelId === 'size-modal' ? 'active' : 'open'));
+                    if(panelId !== 'size-modal') backdrop.classList.remove('active');
                 }
             }
 
@@ -480,13 +606,13 @@
             document.getElementById('close-wishlist').onclick = () => togglePanel('wishlist-sidebar', false);
             
             backdrop.onclick = () => {
-                document.querySelectorAll('.search-overlay, .sidebar-panel, .login-modal, .mobile-menu-overlay').forEach(el => {
+                document.querySelectorAll('.search-overlay, .sidebar-panel, .mobile-menu-overlay').forEach(el => {
                     el.classList.remove('open', 'active');
                 });
                 backdrop.classList.remove('active');
             };
 
-            // --- 4. CART FUNCTIONALITY (Existing Logic) ---
+            // --- 4. CART FUNCTIONALITY ---
             function updateCartUI() {
                 const cartContainer = document.getElementById('cart-items-container');
                 const cartCountDisplay = document.querySelectorAll('.cart-count-display');
@@ -537,12 +663,11 @@
                 });
             });
 
-            // --- 5. CATEGORY FILTER LOGIC (NEW) ---
+            // --- 5. CATEGORY FILTER LOGIC ---
             window.filterProducts = (category) => {
                 const cards = document.querySelectorAll('.product-card');
                 const btns = document.querySelectorAll('.filter-btn');
 
-                // Toggle active button state
                 btns.forEach(btn => {
                     if(btn.innerText.toLowerCase().includes(category) || (category === 'all' && btn.innerText === 'All')) {
                         btn.classList.add('active');
@@ -564,7 +689,7 @@
                 });
             };
 
-            // --- 6. COUNTDOWN TIMER (NEW) ---
+            // --- 6. COUNTDOWN TIMER ---
             const timerEl = document.getElementById('timer');
             let time = 19800; // seconds
             setInterval(() => {
