@@ -3,53 +3,597 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MokshShop | Premium Anime Streetwear</title>
+    <link rel="icon" href="https://thekokorostore.com/wp-content/uploads/2020/06/cropped-logo-with-text-scaled-1-32x32.webp" sizes="32x32" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body {
-            background-color: #f0f4f8;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --text-muted: #a4a4a4;
+            --primary-font: 'Oswald', sans-serif;
+            --accent-color: #ff0040; /* Changed accent to a slight red for Moksh vibe */
+            --transition-speed: 0.4s ease;
         }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--primary-font); font-weight: 300; overflow-x: hidden; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: var(--transition-speed); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        button { cursor: pointer; font-family: var(--primary-font); }
+
+        /* --- UTILITY & PRELOADER --- */
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
+        .loader-text { font-size: 3rem; font-weight: 700; letter-spacing: 5px; color: #fff; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .overlay-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 150; display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .overlay-backdrop.active { display: block; opacity: 1; }
+
+        /* --- ANNOUNCEMENT BAR --- */
+        .announcement-bar { background-color: #fff; color: #000; padding: 8px 0; font-size: 14px; font-weight: 500; overflow: hidden; white-space: nowrap; position: relative; z-index: 101; }
+        .marquee span { display: inline-block; padding-left: 100%; animation: marquee 25s linear infinite; text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        /* --- HEADER --- */
+        .site-header { position: absolute; top: 40px; width: 100%; z-index: 100; background: transparent; transition: 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .site-header.sticky { position: fixed; top: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); padding: 0; border-bottom: none; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; max-width: 1600px; margin: 0 auto; }
+        
+        /* Updated Logo Style */
+        .logo { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: white; text-transform: uppercase; border: 2px solid white; padding: 5px 15px; }
+        
+        .nav-link { font-size: 16px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-right: 25px; position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: #fff; transition: width 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+        .desktop-nav .menu { display: flex; align-items: center; }
+        
+        .icon-link { font-size: 20px; margin-left: 20px; position: relative; background: none; border: none; color: white; }
+        .icon-link:hover { color: #ccc; }
+        .icon-link .count { position: absolute; top: -8px; right: -10px; background: #fff; color: #000; font-size: 10px; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: white; font-size: 24px; }
+
+        /* --- MOBILE MENU (FIXED) --- */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100%; background: #111; z-index: 250;
+            transition: 0.4s ease; padding: 40px; border-right: 1px solid #333; display: flex; flex-direction: column;
         }
-        h1 {
-            color: #333;
-            text-align: center;
+        .mobile-menu-overlay.active { left: 0; }
+        .mobile-menu-close { position: absolute; top: 20px; right: 20px; font-size: 24px; color: #fff; background: none; border: none; }
+        .mobile-nav-links { margin-top: 50px; display: flex; flex-direction: column; gap: 20px; }
+        .mobile-nav-links a { font-size: 20px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
+        /* --- SEARCH OVERLAY --- */
+        .search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 0; background: #111; z-index: 200; overflow: hidden; transition: height 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        p {
-            color: #555;
-            font-size: 18px;
-            text-align: center;
+        .search-overlay.open { height: 400px; border-bottom: 1px solid #333; }
+        .search-container { position: relative; width: 60%; max-width: 800px; text-align: center; }
+        .search-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #333; font-size: 40px; color: #fff; padding: 10px; font-family: var(--primary-font); text-transform: uppercase; outline: none; }
+        .close-search { position: absolute; top: 30px; right: 40px; font-size: 30px; color: #fff; cursor: pointer; }
+
+        /* --- CART SIDEBAR --- */
+        .sidebar-panel {
+            position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: #111; z-index: 200; transition: right 0.4s ease; display: flex; flex-direction: column; border-left: 1px solid #333;
         }
-        button {
-            display: block;
-            margin: 24px auto 0;
-            padding: 10px 24px;
-            background: #0078d4;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
+        .sidebar-panel.open { right: 0; }
+        .panel-header { padding: 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .close-panel { font-size: 20px; background: none; border: none; color: #fff; }
+        .panel-body { padding: 20px; flex: 1; overflow-y: auto; }
+        .panel-footer { padding: 20px; border-top: 1px solid #333; background: #1a1a1a; }
+        
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; }
+        .remove-item { color: #ff4444; font-size: 12px; margin-top: 5px; background: none; border: none; padding: 0; text-decoration: underline; }
+        .checkout-btn { width: 100%; background: #fff; color: #000; padding: 15px; border: none; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+
+        /* --- HERO SLIDER --- */
+        .hero-slider { height: 100vh; width: 100%; position: relative; overflow: hidden; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .slide.active { opacity: 1; }
+        .slide-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 1; transform: scale(1.1); transition: transform 6s ease; }
+        .slide.active .slide-bg { transform: scale(1); }
+        .slide::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2; }
+        .slide-content { position: relative; z-index: 3; max-width: 800px; padding: 20px; }
+        .slide-content h2 { font-size: 80px; line-height: 1; margin-bottom: 20px; transform: translateY(50px); opacity: 0; transition: all 0.8s ease; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .btn-primary { display: inline-block; padding: 15px 40px; background: #fff; color: #000; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border: 2px solid #fff; transition: 0.3s; }
+        .btn-primary:hover { background: #000; color: #fff; }
+        .slider-controls button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 50px; height: 50px; border-radius: 50%; z-index: 10; cursor: pointer; }
+        #prev-slide { left: 40px; } #next-slide { right: 40px; }
+
+        /* --- FEATURE 1: COUNTDOWN TIMER --- */
+        .countdown-section { background: #111; padding: 20px; text-align: center; border-bottom: 1px solid #333; }
+        .countdown-timer { font-size: 24px; font-weight: 700; color: var(--accent-color); letter-spacing: 2px; }
+        .countdown-text { font-size: 14px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+
+        /* --- PRODUCT SECTION --- */
+        .product-section { padding: 80px 40px; max-width: 1600px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 30px; }
+        .section-title { font-size: 40px; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
+
+        /* --- FEATURE 2: FILTERS --- */
+        .filter-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 20px; text-transform: uppercase; transition: 0.3s; }
+        .filter-btn:hover, .filter-btn.active { border-color: #fff; color: #fff; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .product-card { position: relative; cursor: pointer; transition: 0.3s; }
+        .product-image { position: relative; overflow: hidden; aspect-ratio: 2/3; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease, transform 0.6s ease; }
+        .img-back { position: absolute; top: 0; left: 0; opacity: 0; }
+        .product-card:hover .img-front { opacity: 0; }
+        .product-card:hover .img-back { opacity: 1; transform: scale(1.05); }
+        .badge { position: absolute; top: 10px; left: 10px; background: #fff; color: #000; padding: 2px 10px; font-size: 12px; font-weight: 700; z-index: 5; }
+        .quick-actions { position: absolute; bottom: -50px; left: 0; width: 100%; display: flex; transition: bottom 0.4s ease; z-index: 5; }
+        .product-card:hover .quick-actions { bottom: 0; }
+        .quick-view { flex: 1; background: rgba(255,255,255,0.9); border: none; padding: 12px; font-weight: 600; }
+        .add-wishlist { width: 50px; background: #000; color: #fff; border: none; }
+        .product-info { padding-top: 15px; text-align: left; }
+        .product-price { font-size: 16px; font-weight: 600; color: #ccc; display: block; margin-bottom: 10px; }
+        .add-to-cart-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #fff; color: #fff; text-transform: uppercase; transition: 0.3s; }
+        .add-to-cart-btn:hover { background: #fff; color: #000; }
+
+        /* --- FEATURE 3: TESTIMONIALS --- */
+        .testimonials { background: #111; padding: 80px 40px; text-align: center; }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 40px auto 0; }
+        .testimonial-card { background: #0a0a0a; padding: 30px; border: 1px solid #222; }
+        .stars { color: gold; margin-bottom: 15px; }
+        .review-text { font-style: italic; color: #ccc; margin-bottom: 20px; font-size: 14px; }
+        .reviewer-name { font-weight: 700; letter-spacing: 1px; }
+
+        /* --- FEATURE 4: NEWSLETTER --- */
+        .newsletter { padding: 60px 20px; text-align: center; border-top: 1px solid #222; }
+        .newsletter h3 { font-size: 30px; margin-bottom: 10px; }
+        .newsletter-form { max-width: 500px; margin: 20px auto; display: flex; }
+        .newsletter-form input { flex: 1; padding: 15px; background: #111; border: 1px solid #333; color: #fff; outline: none; }
+        .newsletter-form button { padding: 15px 30px; background: #fff; border: none; font-weight: bold; }
+
+        /* --- FEATURE 5: FLOATING WHATSAPP --- */
+        .floating-whatsapp { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 30px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .floating-whatsapp:hover { transform: scale(1.1); }
+
+        /* --- FOOTER --- */
+        .site-footer { background: #050505; padding: 60px 40px 20px; border-top: 1px solid #222; }
+        .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-bottom { border-top: 1px solid #222; padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; color: #666; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .product-grid { grid-template-columns: repeat(2, 1fr); } 
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .sidebar-panel { width: 100%; right: -100%; }
         }
-        button:hover {
-            background: #005fa3;
+        @media (max-width: 768px) { 
+            .desktop-nav { display: none; } 
+            .mobile-menu-btn { display: block; } 
+            .header-container { padding: 15px 20px; } 
+            .footer-container { grid-template-columns: 1fr; } 
+            .announcement-bar { display: none; } 
+            .slide-content h2 { font-size: 40px; }
+            .newsletter-form { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to My Page</h1>
-        <h1>Real Hero Nadeem</h1>
-        <p>This is a simple HTML page with some CSS styling.</p>
-        <button>Click Me</button>
+
+    <div id="preloader"><div class="loader-text">MOKSHSHOP</div></div>
+
+    <div class="overlay-backdrop" id="backdrop"></div>
+
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <button class="mobile-menu-close" id="close-mobile-menu"><i class="fa-solid fa-xmark"></i></button>
+        <div class="mobile-nav-links">
+            <a href="#">New Arrivals</a>
+            <a href="#">Hoodies</a>
+            <a href="#">T-Shirts</a>
+            <a href="#">Accessories</a>
+            <a href="#">Login</a>
+        </div>
     </div>
+
+    <div class="search-overlay" id="search-panel">
+        <button class="close-search" id="close-search"><i class="fa-solid fa-xmark"></i></button>
+        <div class="search-container">
+            <input type="text" class="search-input" id="search-input" placeholder="SEARCH MOKSHSHOP...">
+            <div class="search-results-text">Type 'Arise', 'Hoodie', or 'T-shirt' to filter below.</div>
+        </div>
+    </div>
+
+    <div class="sidebar-panel" id="cart-sidebar">
+        <div class="panel-header">
+            <h3>SHOPPING BAG (<span class="cart-count-display">0</span>)</h3>
+            <button class="close-panel" id="close-cart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="panel-body" id="cart-items-container">
+            <p style="text-align: center; color: #666; margin-top: 50px;">Your cart is empty.</p>
+        </div>
+        <div class="panel-footer">
+            <div class="cart-total">
+                <span>SUBTOTAL:</span>
+                <span id="cart-total-price">₹0.00</span>
+            </div>
+            <button class="checkout-btn">CHECKOUT</button>
+        </div>
+    </div>
+
+    <div class="sidebar-panel" id="wishlist-sidebar">
+        <div class="panel-header">
+            <h3>WISHLIST</h3>
+            <button class="close-panel" id="close-wishlist"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="panel-body">
+            <p style="text-align: center; color: #666; margin-top: 50px;">No saved items yet.</p>
+        </div>
+    </div>
+
+    <div class="announcement-bar">
+        <div class="marquee">
+            <span>WELCOME TO MOKSHSHOP - PREMIUM ANIME STREETWEAR &nbsp;&nbsp; • &nbsp;&nbsp; USE CODE "MOKSH10" TO GET AN INSTANT ₹100 OFF &nbsp;&nbsp; • &nbsp;&nbsp; FREE SHIPPING ON PREPAID ORDERS</span>
+        </div>
+    </div>
+
+    <header class="site-header" id="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobile-menu-trigger"><i class="fa-solid fa-bars"></i></button>
+                <nav class="desktop-nav">
+                    <ul class="menu">
+                        <li><a href="#" class="nav-link">NEW</a></li>
+                        <li class="has-dropdown">
+                            <a href="#" class="nav-link">APPAREL <i class="fa-solid fa-chevron-down"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-center">
+                <a href="#" class="logo">MOKSHSHOP</a>
+            </div>
+            <div class="header-right">
+                <button class="icon-link" id="open-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="icon-link" id="open-wishlist"><i class="fa-regular fa-heart"></i></button>
+                <button class="icon-link" id="open-cart"><i class="fa-solid fa-bag-shopping"></i><span class="count cart-count-display">0</span></button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-slider">
+        <div class="slider-wrapper">
+            <div class="slide active">
+                <div class="slide-bg" style="background-image: url('https://thekokorostore.com/wp-content/uploads/2024/06/Kokoro_02-06-240340-copy-scaled.webp');"></div>
+                <div class="slide-content">
+                    <h2 class="animate-text">MOKSH ORIGINALS</h2>
+                    <p class="animate-text">Elevate Your Anime Style</p>
+                    <a href="#shop" class="btn-primary animate-text">SHOP NOW</a>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-bg" style="background-image: url('https://thekokorostore.com/wp-content/uploads/2024/06/Kokoro_02-06-240602-copy-scaled.webp');"></div>
+                <div class="slide-content">
+                    <h2 class="animate-text">WINTER DROP</h2>
+                    <a href="#shop" class="btn-primary animate-text">EXPLORE</a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <button id="prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+            <button id="next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <div class="countdown-section">
+        <div class="countdown-text">Flash Sale Ends In</div>
+        <div class="countdown-timer" id="timer">05 : 23 : 45</div>
+    </div>
+
+    <main id="shop">
+        <section class="product-section">
+            <div class="section-header">
+                <h2 class="section-title">LATEST DROPS</h2>
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+                <button class="filter-btn" onclick="filterProducts('tshirt')">T-Shirts</button>
+                <button class="filter-btn" onclick="filterProducts('hoodie')">Hoodies</button>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+                <div class="product-card category-tshirt" data-id="1" data-name="Arise - Solo Leveling" data-price="2499" data-img="https://thekokorostore.com/wp-content/uploads/2025/05/229A6779-scaled.jpg">
+                    <div class="product-image">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A6779-scaled.jpg" class="img-front">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A6855-scaled.jpg" class="img-back">
+                        <span class="badge new">NEW</span>
+                        <div class="quick-actions">
+                            <button class="quick-view">VIEW</button>
+                            <button class="add-wishlist"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Arise - Solo Leveling</h3>
+                        <span class="product-price">₹2,499.00</span>
+                        <button class="add-to-cart-btn">ADD TO CART</button>
+                    </div>
+                </div>
+
+                <div class="product-card category-hoodie" data-id="2" data-name="Elric Brothers" data-price="2199" data-img="https://thekokorostore.com/wp-content/uploads/2025/05/229A7488-scaled.jpg">
+                    <div class="product-image">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7488-scaled.jpg" class="img-front">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7491-scaled.jpg" class="img-back">
+                        <div class="quick-actions">
+                            <button class="quick-view">VIEW</button>
+                            <button class="add-wishlist"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Elric Brothers - FMA</h3>
+                        <span class="product-price">₹2,199.00</span>
+                        <button class="add-to-cart-btn">ADD TO CART</button>
+                    </div>
+                </div>
+
+                <div class="product-card category-tshirt" data-id="3" data-name="Banana Organ" data-price="2099" data-img="https://thekokorostore.com/wp-content/uploads/2025/05/229A7259-scaled.jpg">
+                    <div class="product-image">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7259-scaled.jpg" class="img-front">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2025/05/229A7361-scaled.jpg" class="img-back">
+                        <div class="quick-actions">
+                            <button class="quick-view">VIEW</button>
+                            <button class="add-wishlist"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Banana Organ - Dandadan</h3>
+                        <span class="product-price">₹2,099.00</span>
+                        <button class="add-to-cart-btn">ADD TO CART</button>
+                    </div>
+                </div>
+
+                <div class="product-card category-hoodie" data-id="4" data-name="Soul Reaper" data-price="2399" data-img="https://thekokorostore.com/wp-content/uploads/2020/11/KOKORO_0805-copy-scaled.webp">
+                    <div class="product-image">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2020/11/KOKORO_0805-copy-scaled.webp" class="img-front">
+                        <img src="https://thekokorostore.com/wp-content/uploads/2020/11/KOKORO_0834-copy-scaled.webp" class="img-back">
+                        <span class="badge hot">HOT</span>
+                        <div class="quick-actions">
+                            <button class="quick-view">VIEW</button>
+                            <button class="add-wishlist"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Soul Reaper - Bleach</h3>
+                        <span class="product-price">₹2,399.00</span>
+                        <button class="add-to-cart-btn">ADD TO CART</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2 class="section-title">OTAKU REVIEWS</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"The print quality on the Solo Leveling tee is insane. MokshShop never disappoints!"</p>
+                    <p class="reviewer-name">- Rahul S.</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"Finally a brand that understands oversized fit perfectly. Fabric is super thick."</p>
+                    <p class="reviewer-name">- Amit K.</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★☆</div>
+                    <p class="review-text">"Delivery was fast and the packaging was premium. Highly recommended."</p>
+                    <p class="reviewer-name">- Sneha P.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <h3>JOIN THE CLAN</h3>
+            <p>Subscribe for exclusive drops and 10% off your first order.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email">
+                <button type="button">SUBSCRIBE</button>
+            </form>
+        </section>
+    </main>
+
+    <a href="#" class="floating-whatsapp" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>ABOUT MOKSHSHOP</h4>
+                <p>MokshShop is your ultimate destination for premium Anime Streetwear. Designed by otakus, for otakus.</p>
+            </div>
+            <div class="footer-col">
+                <h4>SHOP</h4>
+                <ul><li>New Arrivals</li><li>Oversized T-shirts</li><li>Hoodies</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>HELP</h4>
+                <ul><li>Contact Us</li><li>Returns & Refunds</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>FOLLOW US</h4>
+                <div class="social-links"><i class="fa-brands fa-instagram"></i> <i class="fa-brands fa-facebook"></i></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 MOKSHSHOP | ALL RIGHTS RESERVED</p>
+            <div class="payment-methods"><i class="fa-brands fa-cc-visa"></i> <i class="fa-brands fa-cc-mastercard"></i></div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- 1. GLOBAL VARIABLES & ELEMENTS ---
+            const backdrop = document.getElementById('backdrop');
+            let cart = [];
+            
+            // --- 2. PRELOADER & SCROLL ---
+            const preloader = document.getElementById("preloader");
+            const header = document.getElementById("header");
+            
+            window.addEventListener("load", () => {
+                preloader.style.opacity = "0";
+                setTimeout(() => preloader.style.display = "none", 500);
+            });
+
+            window.addEventListener("scroll", () => {
+                header.classList.toggle("sticky", window.scrollY > 100);
+            });
+
+            // --- 3. UI PANELS TOGGLE LOGIC ---
+            function togglePanel(panelId, open) {
+                const panel = document.getElementById(panelId);
+                const isMobileMenu = panelId === 'mobile-menu-overlay';
+                
+                if (open) {
+                    panel.classList.add(isMobileMenu || panelId === 'login-modal' ? 'active' : 'open');
+                    backdrop.classList.add('active');
+                } else {
+                    panel.classList.remove(isMobileMenu || panelId === 'login-modal' ? 'active' : 'open');
+                    backdrop.classList.remove('active');
+                }
+            }
+
+            // Fixed Mobile Menu Triggers
+            document.getElementById('mobile-menu-trigger').onclick = () => togglePanel('mobile-menu-overlay', true);
+            document.getElementById('close-mobile-menu').onclick = () => togglePanel('mobile-menu-overlay', false);
+
+            document.getElementById('open-search').onclick = () => togglePanel('search-panel', true);
+            document.getElementById('open-cart').onclick = () => togglePanel('cart-sidebar', true);
+            document.getElementById('open-wishlist').onclick = () => togglePanel('wishlist-sidebar', true);
+            
+            document.getElementById('close-search').onclick = () => togglePanel('search-panel', false);
+            document.getElementById('close-cart').onclick = () => togglePanel('cart-sidebar', false);
+            document.getElementById('close-wishlist').onclick = () => togglePanel('wishlist-sidebar', false);
+            
+            backdrop.onclick = () => {
+                document.querySelectorAll('.search-overlay, .sidebar-panel, .login-modal, .mobile-menu-overlay').forEach(el => {
+                    el.classList.remove('open', 'active');
+                });
+                backdrop.classList.remove('active');
+            };
+
+            // --- 4. CART FUNCTIONALITY (Existing Logic) ---
+            function updateCartUI() {
+                const cartContainer = document.getElementById('cart-items-container');
+                const cartCountDisplay = document.querySelectorAll('.cart-count-display');
+                const cartTotalDisplay = document.getElementById('cart-total-price');
+                
+                cartContainer.innerHTML = '';
+                let total = 0;
+
+                if (cart.length === 0) {
+                    cartContainer.innerHTML = '<p style="text-align: center; color: #666; margin-top: 50px;">Your cart is empty.</p>';
+                } else {
+                    cart.forEach((item, index) => {
+                        total += item.price;
+                        cartContainer.innerHTML += `
+                            <div class="cart-item">
+                                <img src="${item.img}" alt="${item.name}">
+                                <div class="cart-item-details">
+                                    <h4>${item.name}</h4>
+                                    <p>₹${item.price.toLocaleString()}</p>
+                                    <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                cartCountDisplay.forEach(el => el.innerText = cart.length);
+                cartTotalDisplay.innerText = '₹' + total.toLocaleString();
+            }
+
+            window.removeFromCart = (index) => {
+                cart.splice(index, 1);
+                updateCartUI();
+            };
+
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    const product = {
+                        id: card.dataset.id,
+                        name: card.dataset.name,
+                        price: parseInt(card.dataset.price),
+                        img: card.dataset.img
+                    };
+                    cart.push(product);
+                    updateCartUI();
+                    togglePanel('cart-sidebar', true); 
+                });
+            });
+
+            // --- 5. CATEGORY FILTER LOGIC (NEW) ---
+            window.filterProducts = (category) => {
+                const cards = document.querySelectorAll('.product-card');
+                const btns = document.querySelectorAll('.filter-btn');
+
+                // Toggle active button state
+                btns.forEach(btn => {
+                    if(btn.innerText.toLowerCase().includes(category) || (category === 'all' && btn.innerText === 'All')) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+
+                cards.forEach(card => {
+                    if (category === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        if (card.classList.contains(`category-${category}`)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+            };
+
+            // --- 6. COUNTDOWN TIMER (NEW) ---
+            const timerEl = document.getElementById('timer');
+            let time = 19800; // seconds
+            setInterval(() => {
+                if(time > 0) {
+                    time--;
+                    let h = Math.floor(time / 3600).toString().padStart(2, '0');
+                    let m = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
+                    let s = (time % 60).toString().padStart(2, '0');
+                    timerEl.innerText = `${h} : ${m} : ${s}`;
+                }
+            }, 1000);
+
+            // --- 7. SLIDER LOGIC ---
+            const slides = document.querySelectorAll(".slide");
+            let currentSlide = 0;
+            const nextSlide = () => {
+                slides[currentSlide].classList.remove("active");
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add("active");
+            };
+            setInterval(nextSlide, 5000);
+            document.getElementById("next-slide").onclick = nextSlide;
+            document.getElementById("prev-slide").onclick = () => {
+                slides[currentSlide].classList.remove("active");
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                slides[currentSlide].classList.add("active");
+            };
+
+        });
+    </script>
 </body>
 </html>
